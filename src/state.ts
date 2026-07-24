@@ -1,0 +1,152 @@
+import type { CalcState } from "./types";
+
+export function todayISO(): string {
+  return new Date().toISOString().slice(0, 10);
+}
+
+export function createInitialState(): CalcState {
+  return {
+    header: {
+      proyecto: "",
+      tag: "",
+      revision: "Rev. 0",
+      fecha: todayISO(),
+      disenador: "",
+      unitSystem: "US",
+    },
+    role: {
+      rol: "primario",
+      tipoDispositivo: "monitores",
+      sistemaPortatil: false,
+      tiempoPuestaServicio: null,
+      suministroAguaAdecuado: false,
+      suministroConcentradoAdecuado: false,
+      evaluacionRiesgoCompleta: false,
+      evaluacionRiesgoDoc: "",
+      planContingenciaCompleto: false,
+      planContingenciaDoc: "",
+      aprobacionAutoridad: false,
+      aprobacionAutoridadRef: "",
+      tanqueHorizontalPresurizado: false,
+      techoFlotante: false,
+    },
+    geometry: {
+      modoEntrada: "diametro",
+      diametroTanque: null,
+      alturaEnvolvente: null,
+      areaLiquidoManual: null,
+      distanciaEmplazamiento: null,
+    },
+    product: {
+      familiaProducto: "hidrocarburo",
+      categoriaHidrocarburo: "cat_100_140",
+      tasaAplicacionManual: null,
+      tiempoOperacionManual: null,
+      ensayoFuegoDoc: "",
+      profundidadLiquidoMayor1in: false,
+      espumaListadaChorroAlcohol: false,
+      puntoInflamacionReal: null,
+      puntoEbullicion: null,
+      rangoAmplioDestilacion: false,
+      aditivosOxigenados: 0,
+      temperaturaAlmacenamiento: null,
+    },
+    factor: {
+      factorMayoracion: 1.5,
+      velocidadVientoDiseno: null,
+      justificacionFactorSuperior: "",
+      tasaDisenoOverride: null,
+    },
+    foam: {
+      tipoConcentrado: "afff",
+      dosificacion: 3,
+      dosificacionCustom: null,
+      listadoAplicacionChorro: false,
+      agenciaListado: "UL",
+      marcaModelo: "",
+      tasaSFFFManual: null,
+    },
+    monitores: {
+      cantidadMonitores: 1,
+      tipoMonitor: "fijo",
+      caudalNominalPorMonitor: null,
+      alcanceEfectivoEspuma: null,
+      presionRequeridaBoquilla: null,
+      ubicacionFueraDique: false,
+    },
+    mangueras: {
+      cantidadLineas: 0,
+      caudalPorLinea: null,
+      tipoBoquilla: "aspirante",
+      longitudTendido: null,
+      metodoDosificacion: "eductor_linea",
+      personalDisponiblePorLinea: null,
+    },
+    supplies: {
+      reservaConcentrado: 100,
+      reservaConcentradoCustom: null,
+      formaReserva: "tanque_separado",
+      caudalAguaDisponible: null,
+      presionDisponible: null,
+      fuenteAgua: "red_ci",
+      autonomiaSuministro: null,
+    },
+    output: {
+      redondeoVolumenes: "alza10",
+      incluirMemoriaCalculo: true,
+      incluirConstanciaCondiciones: true,
+      formatoExportacion: "PDF",
+    },
+  };
+}
+
+export const PLANTILLAS: Record<string, Partial<CalcState>> = {
+  crudo: {
+    product: {
+      familiaProducto: "hidrocarburo",
+      categoriaHidrocarburo: "crudo",
+      tasaAplicacionManual: null,
+      tiempoOperacionManual: null,
+      ensayoFuegoDoc: "",
+      profundidadLiquidoMayor1in: false,
+      espumaListadaChorroAlcohol: false,
+      puntoInflamacionReal: 20,
+      puntoEbullicion: 60,
+      rangoAmplioDestilacion: true,
+      aditivosOxigenados: 0,
+      temperaturaAlmacenamiento: 60,
+    },
+  },
+  gasolina: {
+    product: {
+      familiaProducto: "hidrocarburo",
+      categoriaHidrocarburo: "cat_below_100",
+      tasaAplicacionManual: null,
+      tiempoOperacionManual: null,
+      ensayoFuegoDoc: "",
+      profundidadLiquidoMayor1in: false,
+      espumaListadaChorroAlcohol: false,
+      puntoInflamacionReal: -40,
+      puntoEbullicion: 38,
+      rangoAmplioDestilacion: true,
+      aditivosOxigenados: 10,
+      temperaturaAlmacenamiento: 25,
+    },
+  },
+  diesel: {
+    product: {
+      familiaProducto: "hidrocarburo",
+      categoriaHidrocarburo: "cat_100_140",
+      tasaAplicacionManual: null,
+      tiempoOperacionManual: null,
+      ensayoFuegoDoc: "",
+      profundidadLiquidoMayor1in: false,
+      espumaListadaChorroAlcohol: false,
+      puntoInflamacionReal: 52,
+      puntoEbullicion: 180,
+      rangoAmplioDestilacion: false,
+      aditivosOxigenados: 0,
+      temperaturaAlmacenamiento: 25,
+    },
+  },
+};
