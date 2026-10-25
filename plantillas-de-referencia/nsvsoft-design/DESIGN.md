@@ -1,240 +1,227 @@
 # Sistema de diseño de nsvsoft
 
-> Frameworks: no se detectaron
-> Colores: 20 · Fuentes: 3 · Componentes: 9
-> Biblioteca de íconos: no detectada · Estado: no detectado
-> Tema principal: oscuro · Selector de modo oscuro: no · Movimiento: expresivo
+> Referencia del sitio https://nsvsoft.net/ (página de inicio), verificada el 25 de octubre de 2026 con el CSS del sitio (`style.css`, `home.css`) y con los estilos calculados en el navegador.
+> Base técnica: Bootstrap 5 + Font Awesome, con estilos propios encima.
+> Tema: **claro por defecto**, con cabecera (hero) oscura. Tiene **modo oscuro** que el usuario activa con un botón (clase `body.dark-mode`).
+> Capturas de referencia en `capturas/` (escritorio 1440px y móvil 390px, modo claro y oscuro).
 
 ---
 
 ## 1. Tema visual y atmósfera
 
-Esta es una interfaz de **tema oscuro** con un tono frío. La profundidad se expresa mediante sombras en capas y una sutil variación de color en las superficies. La tipografía combina **Inter** para títulos/encabezados con **Plus Jakarta Sans** para el texto de cuerpo, lo que crea una jerarquía visual clara a través del contraste tipográfico. El espaciado sigue una **cuadrícula base de 5px** (densidad estándar), con la escala: 5, 10, 15, 20, 25, 30, 35, 40px. El color de acento **#3b82f6** ancla los elementos interactivos (botones, enlaces, anillos de foco). El movimiento es expresivo: la física de resortes, las animaciones de diseño y las apariciones escalonadas forman parte del lenguaje visual.
+Software de ingeniería contra incendios con estética moderna tipo "SaaS". La página arranca con un **hero oscuro a pantalla casi completa** (`#020617`, con un video o imagen de planos CAD detrás y un velo oscuro), titular grande en blanco y la segunda línea en azul. Debajo, el resto de la página es **clara** (`#f8fafc`) con paneles de **efecto vidrio** (fondo blanco translúcido + desenfoque), esquinas muy redondeadas (24px) y sombras suaves.
+
+Rasgos que la definen:
+- **Azul como color de marca**, usado en botones con degradado y brillo, enlaces, etiquetas de sección y palabras destacadas de los títulos.
+- **Vidrio esmerilado** (`backdrop-filter: blur(16px)`) en paneles, tarjetas y barra de estadísticas.
+- **Manchas de luz difusas** fijas en el fondo (una azul arriba a la derecha, una roja abajo a la izquierda) que flotan lentamente.
+- **Botones en forma de píldora** (radio 50px).
+- **Aparición al hacer scroll**: cada sección sube 30px y aparece con un fundido.
 
 ---
 
 ## 2. Paleta de colores y roles
 
-| Token | Hex | Rol | Uso |
-|---|---|---|---|
-| bs-emphasis-color | `#000000` | fondo | Fondo de la página, superficie más oscura |
-| surface | `#0f172a` | superficie | Fondos de tarjetas y paneles |
-| bs-emphasis-color | `#ffffff` | texto principal | Encabezados y texto de cuerpo |
-| text-muted | `#94a3b8` | texto atenuado | Leyendas, marcadores de posición, información secundaria |
-| bs-body-color | `#212529` | borde | Divisores, bordes de tarjetas, contornos |
-| accent-color | `#3b82f6` | acento | CTA, enlaces, anillos de foco, estados activos |
-| bs-warning | `#ffc107` | acento | CTA, enlaces, anillos de foco, estados activos |
-| bs-danger | `#dc3545` | peligro | Estados de error, acciones destructivas |
-| bs-success | `#198754` | éxito | Estados de éxito, indicadores positivos |
-| warning | `#f59e0b` | advertencia | Estados de advertencia, indicadores de precaución |
-| theme-color | `#2563eb` | información | Resaltados informativos |
-| bs-primary | `#0d6efd` | sin asignar | Color de la paleta |
-| primary-dark | `#020617` | sin asignar | Color de la paleta |
-| bs-secondary | `#6c757d` | sin asignar | Color de la paleta |
-| text-main | `#334155` | sin asignar | Color de la paleta |
-| bs-primary-text-emphasis | `#6ea8fe` | sin asignar | Color de la paleta |
-| primary-light | `#1e293b` | sin asignar | Color de la paleta |
-| unknown | `#10b981` | sin asignar | Color de la paleta |
-| bs-info | `#0dcaf0` | sin asignar | Color de la paleta |
-| danger-color | `#ef4444` | sin asignar | Color de la paleta |
+### Variables propias del sitio (`:root`)
 
-### Tokens de variables CSS
+| Variable | Modo claro | Modo oscuro | Uso |
+|---|---|---|---|
+| `--bg-body` | `#f8fafc` | `#0f172a` | Fondo de la página |
+| `--text-main` | `#334155` | `#f8fafc` | Texto principal y títulos |
+| `--text-muted` | `#64748b` | `#cbd5e1` | Texto secundario, enlaces del pie |
+| `--primary-dark` | `#020617` | `#ffffff` | Fondo del hero; color "oscuro" de marca |
+| `--primary-light` | `#1e293b` | — | Títulos dentro de artículos |
+| `--accent-color` | `#3b82f6` | `#3b82f6` | Color de marca: botones, enlaces, foco, estado activo |
+| `--accent-glow` | `#60a5fa` | `#60a5fa` | Azul claro: hover de enlaces, degradados en modo oscuro |
+| `--danger-color` | `#ef4444` | `#ef4444` | Rojo: alarmas, módulo "Fire Alarm", mancha de fondo |
+| `--glass-bg` | `rgba(255,255,255,0.75)` | `rgba(30,41,59,0.6)` | Fondo de paneles de vidrio |
+| `--glass-border` | `rgba(255,255,255,0.5)` | `rgba(255,255,255,0.1)` | Borde de paneles de vidrio |
+| `--glass-blur` | `blur(16px)` | `blur(16px)` | Desenfoque de los paneles de vidrio |
+| `--transition-speed` | `0.3s` | `0.3s` | Duración estándar de transiciones |
+
+### Otros colores que se usan de verdad
+
+| Color | Uso en el sitio |
+|---|---|
+| `#2563eb` | Segundo tono del degradado de los botones principales |
+| `#0d6efd` | Azul de Bootstrap (`text-primary`): la palabra destacada del titular ("Without Limits."), etiquetas de sección, contadores y enlaces "Read More". En modo oscuro se reemplaza por `#60a5fa` |
+| `#10b981` | Verde: módulo "IBC Architect", etiqueta "FREE TOOL", marcas de éxito |
+| `#dc3545` | Rojo de Bootstrap: insignia "New" |
+| `#212529` | Texto oscuro de Bootstrap en algunas tarjetas |
+| `#111827` | Texto de precios en tarjetas de módulos |
+| `#f1f5f9` | Números grandes decorativos (01, 02…) detrás de las tarjetas de pasos |
+| `#cbd5e1` | Borde de campos de formulario |
+| `#e2e8f0` | Final del degradado del pie de página; borde del boletín |
+
+### Colores por módulo (producto)
+
+Cada tarjeta de producto define `--module-color` y `--module-bg`:
+
+| Módulo | `--module-color` | `--module-bg` |
+|---|---|---|
+| Fire Alarm Designer | `#ef4444` | `rgba(239, 68, 68, 0.1)` |
+| Fire Sprinkler Designer | `#3b82f6` | `rgba(59, 130, 246, 0.1)` |
+| IBC Architect | `#10b981` | `rgba(16, 185, 129, 0.1)` |
+
+### Variables CSS para copiar
 
 ```css
---bs-primary: #0d6efd;
---bs-secondary: #6c757d;
---bs-primary-rgb: 13,110,253;
---bs-secondary-rgb: 108,117,125;
---bs-primary-text-emphasis: #052c65;
---bs-secondary-text-emphasis: #2b2f32;
---bs-primary-bg-subtle: #cfe2ff;
---bs-secondary-bg-subtle: #e2e3e5;
---bs-primary-border-subtle: #9ec5fe;
---bs-secondary-border-subtle: #c4c8cb;
---bs-success-border-subtle: #a3cfbb;
---bs-info-border-subtle: #9eeaf9;
---bs-warning-border-subtle: #ffe69c;
---bs-danger-border-subtle: #f1aeb5;
---bs-light-border-subtle: #e9ecef;
---bs-dark-border-subtle: #adb5bd;
---bs-secondary-color: rgba(33,37,41,0.75);
---bs-secondary-color-rgb: 33,37,41;
---bs-secondary-bg: #e9ecef;
---bs-secondary-bg-rgb: 233,236,239;
+:root {
+  --primary-dark: #020617;
+  --primary-light: #1e293b;
+  --accent-color: #3b82f6;
+  --accent-glow: #60a5fa;
+  --danger-color: #ef4444;
+  --text-main: #334155;
+  --text-muted: #64748b;
+  --bg-body: #f8fafc;
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-blur: blur(16px);
+  --transition-speed: 0.3s;
+}
+body.dark-mode {
+  --primary-dark: #ffffff;
+  --bg-body: #0f172a;
+  --text-main: #f8fafc;
+  --text-muted: #cbd5e1;
+  --glass-bg: rgba(30, 41, 59, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
 ```
-
 
 ---
 
 ## 3. Reglas tipográficas
 
-**Pila de fuentes:**
-- **Plus Jakarta Sans** — Encabezado 1, Encabezado 2, Encabezado 3
-- **Inter** — Cuerpo, Leyenda
-- **Courier New** — Código
+**Fuentes:**
+- **Inter**: toda la interfaz (cuerpo, títulos h2/h3, menú, botones, formularios). Es la fuente de `body`.
+- **Plus Jakarta Sans**: solo el **titular del hero** (`.hero-title`) y el **logotipo de texto** (`.navbar-brand`), en peso 800.
 
-**Orígenes de las fuentes:**
+El sitio sirve las fuentes en formato woff2 desde `/assets/fonts/`. En esta carpeta están las versiones TTF en `fonts/`:
 
 ```css
-@font-face {
-  font-family: "Inter";
-  src: url("https://nsvsoft.net/assets/fonts/inter-v20-latin-regular.woff2") format("woff2");
-  font-weight: 400;
-}
-@font-face {
-  font-family: "Inter";
-  src: url("https://nsvsoft.net/assets/fonts/inter-v20-latin-700.woff2") format("woff2");
-  font-weight: 700;
-}
-@font-face {
-  font-family: "Plus Jakarta Sans";
-  src: url("https://nsvsoft.net/assets/fonts/plus-jakarta-sans-v12-latin-regular.woff2") format("woff2");
-  font-weight: 400;
-}
-@font-face {
-  font-family: "Plus Jakarta Sans";
-  src: url("https://nsvsoft.net/assets/fonts/plus-jakarta-sans-v12-latin-700.woff2") format("woff2");
-  font-weight: 700;
-}
+@font-face { font-family: "Inter"; src: url("fonts/Inter-Regular.ttf") format("truetype"); font-weight: 400; }
+@font-face { font-family: "Inter"; src: url("fonts/Inter-Medium.ttf") format("truetype"); font-weight: 500; }
+@font-face { font-family: "Inter"; src: url("fonts/Inter-SemiBold.ttf") format("truetype"); font-weight: 600; }
+@font-face { font-family: "Inter"; src: url("fonts/Inter-Bold.ttf") format("truetype"); font-weight: 700; }
+@font-face { font-family: "Inter"; src: url("fonts/Inter-Black.ttf") format("truetype"); font-weight: 900; }
+@font-face { font-family: "Plus Jakarta Sans"; src: url("fonts/PlusJakartaSans-ExtraBold.ttf") format("truetype"); font-weight: 800; }
 ```
 
-| Rol | Fuente | Tamaño | Peso |
-|---|---|---|---|
-| Encabezado 1 | Plus Jakarta Sans | 5rem | 700 |
-| Encabezado 2 | Plus Jakarta Sans | 4.5rem | 700 |
-| Encabezado 3 | Plus Jakarta Sans | 4rem | 700 |
-| Cuerpo | Inter | 0.75rem | 400 |
-| Leyenda | Inter | 1rem | 400 |
-| Código | Courier New | 14px | 400 |
+**Escala (medida en escritorio, 1440px de ancho):**
 
-**Reglas tipográficas:**
-- Limitar a un máximo de 3 familias tipográficas por pantalla
-- Usar **Plus Jakarta Sans** para el texto de cuerpo/interfaz e **Inter** para títulos/encabezados
-- Mantener una jerarquía coherente: no más de 3-4 tamaños de fuente por pantalla
-- Los encabezados usan negrita (600-700) y el cuerpo usa peso regular (400)
-- Interlineado: 1.5 para el texto de cuerpo, 1.2 para los encabezados
-- Usar color y opacidad para la jerarquía secundaria, no tamaños de fuente adicionales
+| Elemento | Fuente | Tamaño | Peso | Interlineado |
+|---|---|---|---|---|
+| Titular del hero (h1) | Plus Jakarta Sans | 64px (4rem); 40px en móvil | 800 | 1.1 |
+| Logotipo de texto | Plus Jakarta Sans | 28.8px (1.8rem) | 800 | — (letter-spacing -0.5px) |
+| Título de sección (h2) | Inter | 32–48px | 700 | 1.2 |
+| Subtítulo (h3) / título de tarjeta | Inter | 20–24px | 700 | 1.2 |
+| Número decorativo de paso | Inter | 64px | 900 | 1 |
+| Enlaces del menú | Inter | 16.8px (1.05rem) | 700 | letter-spacing -0.2px |
+| Texto de cuerpo | Inter | 16px | 400 | 1.5 (24px) |
+| Texto introductorio de sección | Inter | 17.6px (1.1rem) | 400 | 1.5 |
+| Texto de tarjetas (`small`) | Inter | 14px | 400 | 1.5 |
+| Etiqueta de sección (ej. "WORKFLOW") | Inter | 16px | 700, mayúsculas | — |
+| Insignias | Inter | 12px | 700 | — |
+| Texto de artículos del blog | Inter | 17.6px (1.1rem) | 400 | 1.8 |
 
+**Reglas:**
+- Plus Jakarta Sans es solo para el titular del hero y el logotipo; todo lo demás va en Inter.
+- Los títulos de sección suelen resaltar una o dos palabras en azul (`text-primary`) o con degradado de texto (`.text-gradient`).
+- El texto secundario se atenúa con color (`--text-muted`, `text-white-50`, `opacity-75`), no con tamaños extra.
 
 ---
 
 ## 4. Estilos de componentes
 
-### Diseño (1)
+Resumen; el detalle con código está en `GUIA-DE-DISENO.md`.
 
-**Pie de página** — `html`
-
-### Navegación (1)
-
-**Navegación** — `html`
-
-### Visualización de datos (3)
-
-**Tarjeta** — `html`
-- Variantes: `home`, `detail`, `glass`, `1`, `2`
-
-**Insignia** — `html`
-
-**Lista** — `html`
-
-### Entrada de datos (2)
-
-**Botón** — `html`
-- Variantes: `sm`, `link`, `primary-glow`, `lg`, `outline-light`
-- Animación: 
-
-**Campo de entrada** — `html`
-- Estado: :focus, :placeholder
-
-### Superposición (1)
-
-**Modal** — `html`
-
-### Multimedia (1)
-
-**Imagen** — `html`
-
-
+| Componente | Clase en el sitio | Rasgos clave |
+|---|---|---|
+| Barra de navegación | `.navbar.fixed-top` | Transparente sobre el hero; al hacer scroll pasa a blanca (`#ffffff`, o `#0f172a` en oscuro) con sombra `0 4px 20px rgba(0,0,0,0.05)` |
+| Enlace del menú activo | `.navbar .nav-link.active` | Píldora: fondo `rgba(59,130,246,0.1)`, borde interior azul, radio 50px, relleno 8px 18px |
+| Botón principal | `.btn-primary-glow` | Degradado 135° `#3b82f6`→`#2563eb`, píldora, sombra azul; sube 2px al pasar el cursor |
+| Botón secundario (hero) | `.btn-outline-light.rounded-pill` | Borde blanco de 1px, fondo transparente, píldora |
+| Insignia de versión | `.version-badge` | Píldora translúcida blanca con desenfoque |
+| Tarjeta promocional del hero | `.hero-promo-card` | Vidrio oscuro, borde azul, animación de brillo "respirando" |
+| Panel de vidrio | `.glass-panel` | `--glass-bg` + `blur(16px)`, radio 24px |
+| Barra de estadísticas | `.glass-panel` sobre el borde del hero | Cuatro contadores azules con etiqueta gris en mayúsculas |
+| Tarjeta de paso | `.step-card` | Ícono en cuadro azul claro de 60px, número gigante decorativo detrás |
+| Pestañas verticales | `.nav-pills-custom` | La activa con borde azul y sombra azul suave |
+| Visor de características | `.feature-display` | Imagen con radio 30px y texto sobre un velo desenfocado |
+| Comparador antes/después | `.image-slider-container` | Relación 16:9, radio 24px, fondo negro |
+| Tarjeta de producto | `.module-card-home` | Franja superior de 4px del color del módulo, radio 24px |
+| Tarjeta de blog | `.blog-card.glass-panel` | 320px de ancho, imagen de 200px, carrusel horizontal |
+| Pie de página | `.modern-footer` | Degradado `#f8fafc`→`#e2e8f0`, boletín en píldora |
 
 ---
 
-## 5. Principios de diseño
+## 5. Principios de diseño (espaciado y layout)
 
-- **Unidad base de espaciado:** 5px
-- **Escala de espaciado:** 5, 10, 15, 20, 25, 30, 35, 40, 50, 55, 60, 80
-- **Radio de borde:** .25rem, .25em, .375rem, 1rem, 2em, inherit, 3px, 4px, 6px, 8px, 10px, 12px, 14px, 15px, 16px, 18px, 20px, 24px, 28px, 30px, 40px, 50px
-- **Ancho máximo del contenido:** 991px
+- **No hay una cuadrícula de 5px.** El sitio usa la escala de Bootstrap (4, 8, 16, 24, 48px) más valores propios: 10, 20, 24, 28, 30, 40, 60, 80 y 100px.
+- **Separación entre secciones:** 100px arriba y abajo (`.section-padding`); 60px en pantallas de 768px o menos.
+- **Relleno de tarjetas:** 24–30px (48px en las tarjetas de producto en pantallas grandes).
+- **Contenedor:** `.container` de Bootstrap, hasta **1320px** de ancho en pantallas grandes.
+- **Hero:** alto mínimo de 90vh, contenido centrado verticalmente.
+- **Separación entre tarjetas:** la de Bootstrap (`g-4`, 24px).
 
-**El espaciado como significado:**
-| Espaciado | Uso |
+**Radios de borde que se usan:**
+
+| Radio | Dónde |
 |---|---|
-| 2.5-5px | Ajustado: elementos relacionados dentro de un grupo |
-| 10px | Medio: entre grupos |
-| 15-20px | Amplio: entre secciones |
-| 30px+ | Muy amplio: cortes de sección principales |
-
+| 50px | Botones, enlaces del menú, insignias, boletín (píldora) |
+| 30px | Visor de características |
+| 24px | Paneles de vidrio, tarjetas de producto y blog, comparador |
+| 20px | Tarjetas de artículos (página del blog) |
+| 16px | Cuadros de íconos, tarjetas de pasos |
+| 12px | Pestañas verticales, botones de paginación |
+| 50% | Botones redondos (flechas del carrusel), manchas de fondo |
 
 ---
 
 ## 6. Profundidad y elevación
 
-### Plano — indicios sutiles de profundidad
+| Nivel | Sombra | Dónde |
+|---|---|---|
+| Vidrio | `0 8px 32px 0 rgba(31, 38, 135, 0.05)` | Paneles de vidrio |
+| Tarjeta | `0 10px 30px rgba(0, 0, 0, 0.03)` | Tarjetas de producto |
+| Barra al hacer scroll | `0 4px 20px rgba(0, 0, 0, 0.05)` | Barra de navegación |
+| Botón principal | `0 4px 15px rgba(59, 130, 246, 0.4)` | Reposo |
+| Botón principal (hover) | `0 8px 25px rgba(59, 130, 246, 0.6)` | Al pasar el cursor |
+| Pestaña activa | `0 4px 15px rgba(59, 130, 246, 0.15)` | Pestañas verticales |
+| Tarjeta al pasar el cursor | `0 20px 40px rgba(0, 0, 0, 0.08)` | Tarjetas de producto y artículos |
+| Visor de video o imagen | `0 25px 60px -10px rgba(0, 0, 0, 0.6)` | Comparador, video de demostración |
 
-- `0 0 0 1px #fff,0 0 0 .25rem rgba(13,110,253,.25)`
-- `inset 0 0 0 1px rgba(59,130,246,0.2)`
-- `inset 0 0 0 1px rgba(96,165,250,0.25)`
+En **modo oscuro** las sombras negras se intensifican (por ejemplo `rgba(0,0,0,0.3)` en lugar de `0.05`) y los bordes pasan a `rgba(255,255,255,0.1)`.
 
-### Elevado — tarjetas, botones, elementos interactivos
-
-- `0 0 0 .25rem rgba(13,110,253,.25)`
-- `0 0 0 .25rem rgba(var(--bs-success-rgb),.25)`
-- `0 0 0 .25rem rgba(var(--bs-danger-rgb),.25)`
-
-### Flotante — menús desplegables, ventanas emergentes, modales
-
-- `0 4px 15px rgba(59,130,246,0.4)`
-- `0 4px 20px rgba(0,0,0,0.05)`
-- `0 4px 12px rgba(59,130,246,0.3)`
-
-### Superposición — superposiciones de pantalla completa, diálogos de nivel superior
-
-- `inset 0 0 0 9999px var(--bs-table-bg-state,var(--bs-table-bg-type,var(--bs-table-accent-bg)))`
-- `0 8px 32px 0 rgba(31,38,135,0.05)`
-- `0 8px 25px rgba(59,130,246,0.6)`
-
-### Escala de Z-Index
-
-`0, 1, 2, 3, 4, 5, 10, 100, 1020, 1030, 1040, 1055, 9999`
-
-
+**Capas (z-index):** barra de navegación 1030 (Bootstrap), cinta "Available now" 10, contenido del hero 2, velo del hero 1, manchas de fondo -1.
 
 ---
 
 ## 7. Animación y movimiento
 
-Este proyecto usa **movimiento expresivo**. Las animaciones son una parte integral de la experiencia.
+Movimiento **moderado y suave**: aparición al hacer scroll, tarjetas que suben al pasar el cursor y algunos brillos en bucle. No usa física de resortes.
 
-### Animaciones CSS
+**Animaciones propias (`@keyframes`):**
 
-- `@keyframes progress-bar-stripes`
-- `@keyframes spinner-border`
-- `@keyframes spinner-grow`
-- `@keyframes placeholder-glow`
-- `@keyframes placeholder-wave`
-- `@keyframes fa-beat`
-- `@keyframes fa-bounce`
-- `@keyframes fa-fade`
+| Nombre | Efecto | Duración |
+|---|---|---|
+| `floatBlob` | Las manchas de fondo se desplazan 20px/40px | 10s, infinita, ida y vuelta |
+| `breath-glow` | La tarjeta promocional del hero "respira": brillo azul y escala 1→1.02 | 4s, infinita |
+| `ambient-pulse` | Resplandor azul detrás del video pulsa en opacidad y escala | 6s, infinita |
+| `subtle-card-glow` | La tarjeta de producto destacada pulsa su sombra azul | 4s, infinita |
+| `smoothSlideUp` | El contenido de una pestaña entra subiendo 20px con fundido | 0.6s |
+| `dropFade` | Menús desplegables entran subiendo 10px con escala 0.95→1 | — |
 
-### Componentes animados
+Las demás (`spinner-*`, `placeholder-*`, `fa-*`) vienen de Bootstrap y Font Awesome; no son parte del estilo propio.
 
-- **Botón**: 
-
-### Pautas de movimiento
-
-- Duración: 150-300ms para microinteracciones, 300-500ms para transiciones de página
-- Curva de aceleración: `ease-out` para entradas, `ease-in` para salidas
-- Respetar siempre `prefers-reduced-motion`
-
+**Transiciones:**
+- Aparición por scroll (`.reveal` → `.reveal.active`): `all 0.8s cubic-bezier(0.5, 0, 0, 1)`, desde `translateY(30px)` y opacidad 0.
+- Botones y enlaces: `0.3s`; menú: `0.3s cubic-bezier(0.2, 0.8, 0.2, 1)`.
+- Tarjetas al pasar el cursor: `0.3–0.4s`, suben 8–10px (`translateY(-10px)`); las de blog además escalan a 1.02.
+- Imágenes al pasar el cursor: zoom a 1.08–1.1 en `0.5–0.6s`.
+- Cambio claro/oscuro: `background-color 0.3s, color 0.3s` en `body`.
 
 ---
 
@@ -242,45 +229,33 @@ Este proyecto usa **movimiento expresivo**. Las animaciones son una parte integr
 
 ### Qué hacer
 
-- Usar `#3b82f6` para los elementos interactivos (botones, enlaces, anillos de foco)
-- Usar `#000000` como fondo principal de la página
-- Combinar **Plus Jakarta Sans** (cuerpo) con **Inter** (títulos): son las únicas fuentes permitidas
-- Seguir la cuadrícula de espaciado de **5px** para todos los márgenes, rellenos y separaciones
-- Usar los tokens de sombra definidos para la elevación; ver la Sección 6
-- Usar radios de borde de la escala: .25rem, .25em, .375rem, 1rem, 2em
-- Reutilizar los componentes existentes de la Sección 4 antes de crear nuevos
+- Usar `#3b82f6` (y el degradado hacia `#2563eb`) para acciones principales y elementos activos.
+- Usar fondo claro `#f8fafc` en el cuerpo de la página y reservar el oscuro `#020617` para el hero.
+- Usar Inter en todo y Plus Jakarta Sans 800 solo en el titular grande y el logotipo.
+- Usar paneles de vidrio (fondo translúcido + `blur(16px)` + radio 24px) para agrupar contenido.
+- Hacer los botones en forma de píldora (radio 50px).
+- Resaltar una palabra clave de cada título en azul.
+- Definir siempre la versión en modo oscuro de cada componente nuevo.
 
 ### Qué no hacer
 
-- No introducir colores fuera de esta paleta; primero ampliar los tokens de diseño
-- No introducir familias tipográficas adicionales además de Plus Jakarta Sans, Inter y Courier New
-- No usar valores de espaciado arbitrarios; limitarse a múltiplos de 5px
-- No crear valores de box-shadow personalizados fuera de los tokens del sistema
-- No usar valores de border-radius arbitrarios; elegir de la escala definida
-- No duplicar patrones de componentes; revisar primero la Sección 4
-
+- No hacer toda la página oscura: solo el hero lo es en modo claro.
+- No usar esquinas pequeñas (4–8px) en tarjetas o botones; el sitio usa 16–24px en tarjetas y 50px en botones.
+- No usar Plus Jakarta Sans para texto normal.
+- No poner sombras negras fuertes en modo claro; las sombras son muy suaves (opacidad 0.03–0.08) o azules.
+- No mezclar más acentos de color: azul es la marca; rojo y verde solo identifican módulos o estados.
 
 ---
 
 ## 9. Comportamiento responsivo
 
-| Nombre | Valor | Origen |
-|---|---|---|
-| sm | 575.98px | css |
-| sm | 576px | css |
-| md | 767px | css |
-| md | 767.98px | css |
-| md | 768px | css |
-| lg | 991px | css |
-| lg | 991.98px | css |
-| lg | 992px | css |
-| xl | 1199.98px | css |
-| xl | 1200px | css |
-| 2xl | 1399.98px | css |
-| 2xl | 1400px | css |
+Usa los puntos de quiebre de Bootstrap 5 (`sm` 576px, `md` 768px, `lg` 992px, `xl` 1200px, `xxl` 1400px) y además estos ajustes propios:
 
-**Enfoque:** Usar consultas `@media (min-width: ...)` que coincidan con los puntos de quiebre anteriores.
-
+| Ancho | Cambios |
+|---|---|
+| ≤ 991px | El menú se colapsa en un panel oscuro (`#0f172a`) con desenfoque y radio 1rem; se evita el desplazamiento horizontal |
+| ≤ 768px | Titular del hero a 2.5rem (40px); secciones con 60px de separación; visor de características a 350px de alto; pie de página centrado y boletín en columna |
+| ≤ 767px | Se quitan los bordes verticales entre contadores de la barra de estadísticas |
 
 ---
 
@@ -291,61 +266,61 @@ Usa estos ejemplos como punto de partida al construir nuevas interfaces:
 ### Construir una tarjeta
 
 ```
-Fondo: #0f172a
-Borde: 1px solid #212529
-Radio: 12px
-Relleno: 20px
-Fuente: Plus Jakarta Sans
-Usa los tokens de sombra de la sección 6.
+Fondo: rgba(255, 255, 255, 0.75) con backdrop-filter: blur(16px)
+Borde: 1px solid rgba(255, 255, 255, 0.5)
+Radio: 24px
+Relleno: 30px
+Sombra: 0 8px 32px 0 rgba(31, 38, 135, 0.05)
+Al pasar el cursor: translateY(-10px) en 0.4s
+Modo oscuro: fondo rgba(30, 41, 59, 0.6), borde rgba(255, 255, 255, 0.1)
 ```
 
 ### Construir un botón
 
 ```
-Primario: fondo #3b82f6, texto blanco
-Fantasma: fondo transparente, borde #212529
-Relleno: 10px 20px
-Radio: 12px
-Al pasar el cursor: opacidad 0.9 o un tono más claro
-Foco: anillo con #3b82f6
+Principal: degradado 135deg #3b82f6 → #2563eb, texto blanco, peso 700
+Radio: 50px (píldora)
+Relleno: 10px 28px
+Sombra: 0 4px 15px rgba(59, 130, 246, 0.4)
+Al pasar el cursor: translateY(-2px), sombra 0 8px 25px rgba(59, 130, 246, 0.6)
+Secundario sobre fondo oscuro: transparente, borde 1px blanco, píldora
 ```
 
 ### Construir el diseño de una página
 
 ```
-Fondo: #000000
-Ancho máximo: 991px, centrado
-Cuadrícula: base de 5px
-Responsivo: primero móvil, puntos de quiebre de la sección 9
+Hero: fondo #020617 con imagen y velo rgba(2, 6, 23, 0.6), alto mínimo 90vh, texto blanco
+Resto de la página: fondo #f8fafc, texto #334155
+Contenedor: hasta 1320px, centrado
+Secciones: 100px de separación vertical (60px en móvil)
+Cada sección aparece al hacer scroll (sube 30px, 0.8s)
 ```
 
 ### Construir una tarjeta de estadísticas
 
 ```
-Superficie: #0f172a
-Etiqueta: #94a3b8 (atenuado, 12px, mayúsculas)
-Valor: #ffffff (principal, 24-32px, negrita)
-Estado: usa éxito/advertencia/peligro de la sección 2
+Contenedor: panel de vidrio, radio 24px, superpuesto al borde inferior del hero
+Valor: Inter 700, color azul (#0d6efd / #60a5fa en oscuro)
+Etiqueta: Inter 700, mayúsculas, color #64748b, tamaño pequeño
+Separadores verticales entre columnas (se quitan en móvil)
 ```
 
 ### Construir un formulario
 
 ```
-Fondo del campo: #000000
-Borde del campo: 1px solid #212529
-Foco: color de borde #3b82f6
-Etiqueta: #94a3b8 12px
-Espaciado: 20px entre campos
-Radio: 12px
+Campo: borde 1px solid #cbd5e1, fondo rgba(255, 255, 255, 0.8)
+Foco: fondo #fff, borde #3b82f6, sombra 0 0 0 3px rgba(59, 130, 246, 0.2)
+Boletín: campo y botón dentro de una píldora blanca (radio 50px, relleno 6px)
+Modo oscuro: fondo #1e293b, borde #334155
 ```
 
 ### Componente general
 
 ```
-1. Lee las secciones 2-6 de DESIGN.md para los tokens
-2. Colores: solo de la paleta
-3. Fuente: Plus Jakarta Sans, escala tipográfica de la sección 3
-4. Espaciado: cuadrícula de 5px
-5. Componentes: sigue los patrones de la sección 4
-6. Elevación: tokens de sombra
+1. Lee las secciones 2-6 de este archivo para los valores
+2. Colores: variables de la sección 2
+3. Fuente: Inter; Plus Jakarta Sans 800 solo para titulares grandes
+4. Espaciado: escala de Bootstrap + 100px entre secciones
+5. Componentes: sigue los patrones de GUIA-DE-DISENO.md
+6. Define el modo oscuro con body.dark-mode
 ```

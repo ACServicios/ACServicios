@@ -1,456 +1,527 @@
 # Guía de diseño de nsvsoft
 
-Esta guía describe la interfaz de **nsvsoft**. Tema oscuro, paleta fría, tipografía sans-serif (Plus Jakarta Sans), densidad estándar sobre una cuadrícula de 5px y movimiento expresivo.
+Esta guía describe cómo están construidos los componentes de la página de inicio de https://nsvsoft.net/ (verificada el 25 de octubre de 2026). Los valores de color, tipografía, espaciado y sombras están en `DESIGN.md`; aquí está el código de cada componente.
+
+Resumen: página **clara** (`#f8fafc`) con un **hero oscuro** (`#020617`), azul `#3b82f6` como color de marca, paneles de **vidrio esmerilado** con radio 24px, botones en **píldora**, fuente **Inter** (y Plus Jakarta Sans solo en el titular grande) y **modo oscuro** opcional.
 
 ## Filosofía de diseño
 
-- **Profundidad en capas** — usa los tokens de sombra para crear una sensación de superposición física. Cada nivel de elevación tiene una sombra específica.
-- **Acentos con degradado** — los degradados se usan con criterio para dar énfasis, no como decoración.
-- **Combinación tipográfica** — Plus Jakarta Sans para el texto de cuerpo/interfaz, Inter para encabezados/display. Nunca introduzcas una tercera tipografía.
-- **Densidad estándar** — cuadrícula base de 5px. Cada dimensión es múltiplo de 5.
-- **Paleta fría** — la temperatura de color es fría, en sintonía con la tipografía sans-serif.
-- **Acento contenido** — `#3b82f6` es el único toque de color. Se usa exclusivamente para CTAs, enlaces, anillos de foco y estados activos.
-- **Movimiento expresivo** — las animaciones son parte integral de la experiencia. Usa física de resortes (spring) y animaciones de layout.
+- **Contraste hero / contenido**: la cabecera es oscura y cinematográfica (planos CAD de fondo) y el contenido es claro y aireado.
+- **Vidrio esmerilado**: los bloques de contenido flotan sobre el fondo con transparencia y desenfoque, no con bordes duros.
+- **Azul con brillo**: el azul de marca aparece con degradados y sombras de color, sobre todo en botones y elementos activos.
+- **Formas suaves**: esquinas de 16–24px en tarjetas y 50px en botones; casi no hay esquinas rectas.
+- **Movimiento discreto**: las secciones aparecen al hacer scroll, las tarjetas suben al pasar el cursor y algunos elementos destacados tienen un brillo pulsante.
+- **Colores por producto**: cada módulo tiene su color (rojo alarma, azul rociadores, verde IBC), aplicado por variables CSS.
 
 ## Sistema de color
 
 ### Paleta principal
 
-| Rol | Token | Hex | Uso |
+| Rol | Variable | Claro | Oscuro |
 |------|-------|-----|-----|
-| Fondo | `--background` | `#000000` | Fondo de la página/aplicación |
-| Superficie | `--surface` | `#0f172a` | Tarjetas, paneles, modales |
-| Texto principal | `--text-primary` | `#ffffff` | Encabezados, texto de cuerpo |
-| Texto atenuado | `--text-muted` | `#94a3b8` | Leyendas, placeholders |
-| Acento | `--accent` | `#3b82f6` | CTAs, enlaces, anillos de foco |
-| Borde | `--border` | `#212529` | Divisores, bordes de tarjetas |
+| Fondo de página | `--bg-body` | `#f8fafc` | `#0f172a` |
+| Fondo del hero | `--primary-dark` | `#020617` | `#020617` (fijo en `.hero`) |
+| Texto principal | `--text-main` | `#334155` | `#f8fafc` |
+| Texto atenuado | `--text-muted` | `#64748b` | `#cbd5e1` |
+| Acento / marca | `--accent-color` | `#3b82f6` | `#3b82f6` |
+| Acento claro | `--accent-glow` | `#60a5fa` | `#60a5fa` |
+| Peligro / alarma | `--danger-color` | `#ef4444` | `#ef4444` |
+| Vidrio (fondo) | `--glass-bg` | `rgba(255,255,255,0.75)` | `rgba(30,41,59,0.6)` |
+| Vidrio (borde) | `--glass-border` | `rgba(255,255,255,0.5)` | `rgba(255,255,255,0.1)` |
 
-### Colores de estado
+### Colores de estado y de módulo
 
-| Estado | Hex | Uso |
-|--------|-----|-----|
-| Éxito | `#198754` | Confirmaciones, tendencias positivas |
-| Advertencia | `#f59e0b` | Estados de precaución, elementos pendientes |
-| Peligro | `#dc3545` | Errores, acciones destructivas |
-
-### Paleta extendida
-
-- **theme-color:** `#2563eb`
-- **bs-primary:** `#0d6efd`
-- **primary-dark:** `#020617` — Capa de fondo profunda o color de sombra
-- **bs-secondary:** `#6c757d` — Texto secundario, texto de placeholder
-- **text-main:** `#334155`
-- **bs-primary-text-emphasis:** `#6ea8fe`
-- **primary-light:** `#1e293b`
-- `#10b981`
-
-### Tokens de variables CSS
-
-```css
---bs-primary: #0d6efd;
---bs-secondary: #6c757d;
---bs-primary-rgb: 13,110,253;
---bs-secondary-rgb: 108,117,125;
---bs-primary-text-emphasis: #052c65;
---bs-secondary-text-emphasis: #2b2f32;
---bs-primary-bg-subtle: #cfe2ff;
---bs-secondary-bg-subtle: #e2e3e5;
---bs-primary-border-subtle: #9ec5fe;
---bs-secondary-border-subtle: #c4c8cb;
---bs-success-border-subtle: #a3cfbb;
---bs-info-border-subtle: #9eeaf9;
---bs-warning-border-subtle: #ffe69c;
---bs-danger-border-subtle: #f1aeb5;
---bs-light-border-subtle: #e9ecef;
---bs-dark-border-subtle: #adb5bd;
---bs-secondary-color: rgba(33,37,41,0.75);
---bs-secondary-color-rgb: 33,37,41;
---bs-secondary-bg: #e9ecef;
---bs-secondary-bg-rgb: 233,236,239;
-```
+| Uso | Color |
+|--------|-----|
+| Éxito / módulo IBC / "FREE TOOL" | `#10b981` |
+| Peligro / módulo Fire Alarm | `#ef4444` (insignia "New": `#dc3545`) |
+| Azul de texto destacado (Bootstrap `text-primary`) | `#0d6efd`; en oscuro `#60a5fa` |
 
 ## Tipografía
 
-### Pila de fuentes
-
-- **Plus Jakarta Sans** — Encabezado 1, Encabezado 2, Encabezado 3
-- **Inter** — Cuerpo, Leyenda
-- **Courier New** — Código
-
-### Origen de las fuentes
+- **Inter** para todo el sitio (cuerpo 16px/400, títulos de sección 32–48px/700, tarjetas 20–24px/700).
+- **Plus Jakarta Sans 800** solo para `.hero-title` (64px, 40px en móvil) y `.navbar-brand`.
 
 ```css
-@font-face {
-  font-family: "Inter";
-  src: url("fonts/Inter-Bold.ttf") format("truetype");
-  font-weight: 700;
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-body);
+  color: var(--text-main);
+  transition: background-color 0.3s, color 0.3s;
 }
-@font-face {
-  font-family: "Inter";
-  src: url("fonts/Inter-Regular.ttf") format("truetype");
-  font-weight: 400;
+.hero-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 4rem;
+  line-height: 1.1;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
 }
-@font-face {
-  font-family: "Plus Jakarta Sans";
-  src: url("fonts/PlusJakartaSans-Bold.ttf") format("truetype");
-  font-weight: 700;
-}
-@font-face {
-  font-family: "Plus Jakarta Sans";
-  src: url("fonts/PlusJakartaSans-Regular.ttf") format("truetype");
-  font-weight: 400;
+@media (max-width: 768px) {
+  .hero-title { font-size: 2.5rem; }
 }
 ```
 
-### Escala tipográfica
+Título de sección con palabra destacada:
 
-| Rol | Familia | Tamaño | Peso |
-|------|--------|------|--------|
-| Encabezado 1 | Plus Jakarta Sans | 5rem | 700 |
-| Encabezado 2 | Plus Jakarta Sans | 4.5rem | 700 |
-| Encabezado 3 | Plus Jakarta Sans | 4rem | 700 |
-| Cuerpo | Inter | 0.75rem | 400 |
-| Leyenda | Inter | 1rem | 400 |
-| Código | Courier New | 14px | 400 |
+```html
+<h6 class="text-primary fw-bold text-uppercase">Workflow</h6>
+<h2 class="fw-bold">Fire Sprinkler System <span class="text-primary">Design</span> Simplified</h2>
+```
 
-### Reglas tipográficas
+Degradado de texto (alternativa al azul plano):
 
-- Cuerpo/interfaz: **Plus Jakarta Sans**, encabezados: **Inter** — son las únicas fuentes de display
-- Máximo 3-4 tamaños de fuente por pantalla
-- Encabezados: peso 600-700, cuerpo: peso 400
-- Usa el color y la opacidad para la jerarquía del texto, no tamaños de fuente adicionales
-- Interlineado: 1.5 para el cuerpo, 1.2 para los encabezados
+```css
+.text-gradient {
+  background: linear-gradient(135deg, #0f172a 0%, var(--accent-color) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+body.dark-mode .text-gradient {
+  background: linear-gradient(135deg, #fff 0%, var(--accent-glow) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+```
 
 ## Espaciado y layout
 
-### Cuadrícula base: 5px
+- Contenedor `.container` de Bootstrap (máx. **1320px**).
+- Secciones: `padding: 100px 0` (`60px 0` en ≤ 768px).
+- Tarjetas: relleno 24–30px; separación entre tarjetas 24px (`g-4`).
+- No hay cuadrícula de 5px: se usa la escala de Bootstrap (4, 8, 16, 24, 48px) y valores propios (10, 20, 30, 40, 60, 80, 100px).
 
-Cada dimensión (margin, padding, gap, ancho, alto) debe ser múltiplo de **5px**.
+```css
+.section-padding { padding: 100px 0; }
+@media (max-width: 768px) {
+  .section-padding { padding: 60px 0; }
+}
+```
 
-### Escala de espaciado
+### Radios de borde
 
-`5, 10, 15, 20, 25, 30, 35, 40, 50, 55, 60, 80` px
-
-### El espaciado como significado
-
-| Espaciado | Uso |
-|---------|-----|
-| 2.5-5px | Ajustado: elementos relacionados dentro de un grupo |
-| 10px | Medio: entre grupos |
-| 15-20px | Amplio: entre secciones |
-| 30px+ | Muy amplio: cortes entre secciones principales |
-
-### Radio de borde
-
-Escala: `.25rem, .25em, .375rem, 1rem, 2em, inherit, 3px, 4px, 6px, 8px, 10px, 12px, 14px, 15px, 16px, 18px, 20px, 24px, 28px, 30px, 40px, 50px`
-Predeterminado: `12px`
-
-### Contenedor
-
-Ancho máximo: `991px`, centrado con márgenes automáticos.
+| Radio | Uso |
+|---|---|
+| 50px | Botones, menú, insignias, boletín |
+| 30px | Visor de características |
+| 24px | Paneles de vidrio y tarjetas |
+| 16px | Cuadros de íconos |
+| 12px | Pestañas verticales, paginación |
 
 ### Breakpoints
 
-| Nombre | Valor |
-|------|-------|
-| sm | 575.98px |
-| sm | 576px |
-| md | 767px |
-| md | 767.98px |
-| md | 768px |
-| lg | 991px |
-| lg | 991.98px |
-| lg | 992px |
-| xl | 1199.98px |
-| xl | 1200px |
-| 2xl | 1399.98px |
-| 2xl | 1400px |
-
-Mobile-first: diseña para pantallas pequeñas y agrega encima los ajustes responsivos.
+Bootstrap 5: `576px`, `768px`, `992px`, `1200px`, `1400px`. Ajustes propios en `max-width: 991px` (menú móvil), `768px` (tipografía y espaciado) y `767px`.
 
 ## Patrones de componentes
 
-### Tarjeta
+### Fondo con manchas de luz
 
 ```css
-.card {
-  background: #0f172a;
-  border: 1px solid #212529;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 0 0 .25rem rgba(13,110,253,.25);
+.ambient-blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: -1;
+  opacity: 0.4;
+  animation: floatBlob 10s infinite alternate;
+}
+.blob-1 { top: -10%; right: -10%; width: 600px; height: 600px; background: rgba(59, 130, 246, 0.2); }
+.blob-2 { bottom: 10%; left: -10%; width: 500px; height: 500px; background: rgba(239, 68, 68, 0.15); }
+@keyframes floatBlob {
+  0%   { transform: translate(0, 0); }
+  100% { transform: translate(20px, 40px); }
 }
 ```
 
-```html
-<div class="card">
-  <h3>Card Title</h3>
-  <p>Card content goes here.</p>
-</div>
-```
+### Barra de navegación
 
-### Botón
+Transparente sobre el hero (texto blanco). Al hacer scroll se le agrega la clase `.scrolled` y pasa a blanca.
 
 ```css
-/* Primary */
-.btn-primary {
-  background: #3b82f6;
-  color: #ffffff;
-  border-radius: 12px;
-  padding: 10px 20px;
-  font-weight: 500;
-  transition: opacity 150ms ease;
+.navbar {
+  transition: background-color 0.4s ease, box-shadow 0.4s ease;
+  padding: 0.8rem 0;
 }
-.btn-primary:hover { opacity: 0.9; }
-
-/* Ghost */
-.btn-ghost {
-  background: transparent;
-  border: 1px solid #212529;
-  color: #ffffff;
-  border-radius: 12px;
-  padding: 10px 20px;
+.navbar-brand {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  font-size: 1.8rem;
+  letter-spacing: -0.5px;
 }
-```
-
-```html
-<button class="btn-primary">Get Started</button>
-<button class="btn-ghost">Learn More</button>
-```
-
-### Campo de entrada
-
-```css
-.input {
-  background: #000000;
-  border: 1px solid #212529;
-  border-radius: 12px;
-  padding: 10px 15px;
-  color: #ffffff;
-  font-size: 14px;
-}
-.input:focus { border-color: #3b82f6; outline: none; }
-```
-
-```html
-<input class="input" type="text" placeholder="Search..." />
-```
-
-### Insignia / Chip
-
-```css
-.badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 5px 10px;
-  border-radius: 9999px;
-  font-size: 12px;
-  font-weight: 500;
-  background: #0f172a;
-  color: #94a3b8;
-}
-```
-
-```html
-<span class="badge">New</span>
-<span class="badge">Beta</span>
-```
-
-### Modal / Diálogo
-
-```css
-.modal-backdrop { background: rgba(0, 0, 0, 0.6); }
-.modal {
-  background: #0f172a;
-  border: 1px solid #212529;
+.navbar .nav-link {
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin: 0 10px;
+  letter-spacing: -0.2px;
   border-radius: 50px;
-  padding: 30px;
-  max-width: 480px;
-  width: 90vw;
-  box-shadow: 0 4px 15px rgba(59,130,246,0.4);
+  padding: 8px 18px;
+  transition: 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.navbar .nav-link.active {
+  background: rgba(59, 130, 246, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(59, 130, 246, 0.2);
+}
+.navbar .nav-link:hover,
+.navbar .nav-link.active { color: var(--accent-color); }
+.navbar.scrolled {
+  background-color: #ffffff;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+body.dark-mode .navbar.scrolled { background-color: #0f172a; }
+```
+
+Contenido: logotipo · Home, Pricing, Software, Online Tools, Videos, Blog · botón de tema (luna/sol) · "Log In" · botón "Get Started".
+
+### Botón principal
+
+```css
+.btn-primary-glow {
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent-color), #2563eb);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 10px 28px;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+  transition: 0.3s;
+}
+.btn-primary-glow:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
 }
 ```
 
 ```html
-<div class="modal-backdrop">
-  <div class="modal">
-    <h2>Dialog Title</h2>
-    <p>Dialog content.</p>
-    <button class="btn-primary">Confirm</button>
-    <button class="btn-ghost">Cancel</button>
-  </div>
-</div>
+<a href="#" class="btn-primary-glow">Get Started</a>
+<a href="#" class="btn btn-outline-light btn-lg rounded-pill px-4">Watch Demo</a>
 ```
 
-### Tabla
+### Hero
 
 ```css
-.table { width: 100%; border-collapse: collapse; }
-.table th {
-  text-align: left;
-  padding: 10px 15px;
-  font-weight: 500;
-  font-size: 12px;
-  color: #94a3b8;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  border-bottom: 1px solid #212529;
-}
-.table td {
-  padding: 15px;
-  border-bottom: 1px solid #212529;
-}
-```
-
-```html
-<table class="table">
-  <thead><tr><th>Name</th><th>Status</th><th>Date</th></tr></thead>
-  <tbody>
-    <tr><td>Item One</td><td>Active</td><td>Jan 1</td></tr>
-    <tr><td>Item Two</td><td>Pending</td><td>Jan 2</td></tr>
-  </tbody>
-</table>
-```
-
-### Navegación
-
-```css
-.nav {
+.hero {
+  position: relative;
+  min-height: 90vh;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 15px 20px;
-  border-bottom: 1px solid #212529;
+  color: white;
+  overflow: hidden;
+  padding-top: 100px;
+  background-color: #020617;
 }
-.nav-link {
-  color: #94a3b8;
-  padding: 10px 15px;
-  border-radius: 12px;
-  transition: color 150ms;
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(2, 6, 23, 0.6), rgba(2, 6, 23, 0.6));
+  z-index: 1;
 }
-.nav-link:hover { color: #ffffff; }
-.nav-link.active { color: #3b82f6; }
+.hero .container { position: relative; z-index: 2; }
+.version-badge {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50px;
+  padding: 6px 16px;
+  margin-bottom: 24px;
+  backdrop-filter: blur(10px);
+}
+```
+
+Estructura: insignia de versión ("New" en rojo + texto) → titular de dos líneas (la segunda en azul) → párrafo en `text-white-50` → botón principal + botón con contorno. A la derecha, una tarjeta promocional.
+
+### Tarjeta promocional del hero
+
+```css
+.hero-promo-card {
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 24px;
+  transition: 0.3s;
+  animation: breath-glow 4s infinite ease-in-out;
+}
+.hero-promo-card:hover {
+  background: rgba(15, 23, 42, 0.8);
+  animation-play-state: paused;
+  transform: translateY(-5px);
+  border-color: var(--accent-color);
+}
+@keyframes breath-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); border-color: rgba(59, 130, 246, 0.3); transform: scale(1); }
+  50%      { box-shadow: 0 0 25px 5px rgba(59, 130, 246, 0.3); border-color: rgba(59, 130, 246, 0.8); transform: scale(1.02); }
+}
+```
+
+### Panel de vidrio (base de casi todas las tarjetas)
+
+```css
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+  border-radius: 24px;
+}
+```
+
+La **barra de estadísticas** es un `.glass-panel` con margen negativo superior (`mt-n5`) que se monta sobre el borde inferior del hero, con cuatro columnas: valor azul en negrita + etiqueta gris en mayúsculas ("5x FASTER", "99 ACCURACY %"…).
+
+### Tarjeta de paso (flujo de trabajo)
+
+```css
+.step-card { position: relative; padding: 30px; height: 100%; transition: 0.4s; }
+.step-card:hover { transform: translateY(-10px); }
+.step-number {
+  font-size: 4rem;
+  font-weight: 900;
+  color: #f1f5f9;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  line-height: 1;
+}
+.step-icon {
+  width: 60px;
+  height: 60px;
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--accent-color);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+body.dark-mode .step-number { color: #1e293b; text-shadow: -1px -1px 0 #334155; }
 ```
 
 ```html
-<nav class="nav">
-  <a href="/" class="nav-link active">Home</a>
-  <a href="/about" class="nav-link">About</a>
-  <a href="/pricing" class="nav-link">Pricing</a>
-  <button class="btn-primary" style="margin-left: auto">Get Started</button>
-</nav>
+<div class="glass-panel step-card">
+  <span class="step-number">01</span>
+  <div class="step-icon"><i class="fa-solid fa-layer-group"></i></div>
+  <h3 class="h5 fw-bold">Plan Preparation &amp; Clean-Ups</h3>
+  <p class="text-muted small mb-0">Smart tools that automate repetitive drawing cleanup tasks.</p>
+</div>
 ```
 
-### Componentes extraídos
+### Pestañas verticales con visor
 
-Estos componentes se encontraron en el código fuente:
+```css
+.nav-pills-custom .nav-link {
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  padding: 20px 24px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-pills-custom .nav-link:hover { background: rgba(59, 130, 246, 0.05); }
+.nav-pills-custom .nav-link.active {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  color: var(--accent-color);
+  border: 1px solid var(--accent-color);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.15);
+}
+.feature-display {
+  position: relative;
+  height: 450px;
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.6), 0 20px 50px rgba(0, 0, 0, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+}
+.tab-pane.active { animation: smoothSlideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+@keyframes smoothSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+```
 
-**Botón** (`html`)
-- Variantes: `sm`, `link`, `primary-glow`, `lg`, `outline-light`
+La lista de pestañas va a la izquierda (ícono + texto + flecha) y el visor a la derecha, con imagen y un texto sobre un velo blanco desenfocado en la mitad inferior.
 
-**Campo de entrada** (`html`)
+### Tarjeta de producto (módulo)
 
-**Tarjeta** (`html`)
-- Variantes: `home`, `detail`, `glass`, `1`, `2`
+```css
+.module-card-home {
+  position: relative;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+.module-card-home::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--module-color);
+}
+.module-card-home:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 0 20px var(--module-bg) inset;
+}
+.module-icon-box {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  background: var(--module-bg);
+  color: var(--module-color);
+}
+.module-btn,
+.module-btn-solid {
+  border-radius: 50px;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+.module-btn { background: transparent; border: 1px solid var(--module-color); color: #111827; }
+.module-btn-solid { background: var(--module-color); color: #fff; border: none; box-shadow: 0 5px 15px var(--module-bg); }
+body.dark-mode .module-card-home { background: rgba(30, 41, 59, 0.9); border-color: rgba(255, 255, 255, 0.08); }
+```
 
-**Navegación** (`html`)
+```html
+<div class="module-card-home p-4" style="--module-color:#3b82f6; --module-bg:rgba(59,130,246,0.1)">
+  <div class="module-icon-box"><i class="fa-solid fa-droplet"></i></div>
+  <h3 class="h4 fw-bold">Fire Sprinkler Designer</h3>
+  <p class="text-muted small">Accurate, fast, and productive tools for fire sprinkler safety analysis.</p>
+  <a href="#" class="btn module-btn-solid w-100">Start free trial</a>
+</div>
+```
 
-**Insignia** (`html`)
+La tarjeta destacada lleva una cinta diagonal en la esquina ("AVAILABLE NOW") y la animación `subtle-card-glow` (sombra azul que pulsa cada 4s). Las demás muestran un recuadro punteado "Coming Soon".
 
-**Modal** (`html`)
+### Carrusel de blog
+
+```css
+.blog-scroll-container { display: flex; gap: 24px; overflow-x: auto; padding: 30px 5px; scrollbar-width: none; }
+.blog-card { min-width: 320px; max-width: 320px; border-radius: 24px; overflow: hidden; transition: 0.4s; }
+.blog-card:hover { transform: translateY(-10px) scale(1.02); }
+.blog-img-wrapper { height: 200px; overflow: hidden; }
+.blog-card:hover .blog-img-wrapper img { transform: scale(1.1); }
+.scroll-btn {
+  width: 45px; height: 45px; border-radius: 50%;
+  background: var(--glass-bg); border: 1px solid var(--glass-border);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.scroll-btn:hover { background: var(--accent-color); color: white; }
+```
+
+Cada tarjeta: imagen · categoría en azul y mayúsculas · título truncado a una línea · extracto · enlace "Read More →".
+
+### Pie de página y boletín
+
+```css
+.modern-footer {
+  background: linear-gradient(to bottom, #f8fafc 0%, #e2e8f0 100%);
+  padding: 80px 0 30px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+.newsletter-box {
+  background: white;
+  padding: 6px;
+  border-radius: 50px;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+.footer-link { color: var(--text-muted); font-weight: 500; margin-bottom: 12px; transition: 0.2s; }
+.footer-link:hover { color: var(--accent-color); padding-left: 5px; }
+body.dark-mode footer { background: #020617; border-top: 1px solid #1e293b; }
+```
+
+Columnas: marca + descripción + boletín · Product · Resources · Contact (correo, ubicación, redes). Abajo: copyright y enlaces legales.
+
+### Campo de formulario
+
+```css
+.form-control-bordered { border: 1px solid #cbd5e1; background-color: rgba(255, 255, 255, 0.8); }
+.form-control-bordered:focus {
+  background-color: #fff;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+```
 
 ## Estructura de página
 
-Se detectaron las siguientes secciones de página:
+Orden real de la página de inicio:
 
-- **Navegación** — Barra de navegación superior (9 elementos)
-- **Hero** — Sección hero/banner con titular y CTAs
-- **Características** — Cuadrícula de tarjetas de características/beneficios (23 elementos)
-- **Pie de página** — Pie de página con enlaces e información (17 elementos)
-- **Preguntas frecuentes** — Sección de FAQ/acordeón
-- **CTA** — Sección de llamado a la acción
+1. **Barra de navegación** fija.
+2. **Hero** oscuro: insignia de versión, titular, texto, dos botones y tarjeta promocional.
+3. **Barra de estadísticas** de vidrio montada sobre el borde del hero.
+4. **"See the Designer in Action"**: comparador antes/después de planos.
+5. **"Fire Sprinkler System Design Simplified"**: cinco tarjetas de pasos numeradas.
+6. **"Powerful Features for Modern Engineers"**: pestañas verticales + visor.
+7. **"Built for Real Fire Protection Workflows"**: texto a la izquierda y lista de beneficios con ícono de check a la derecha; luego una cuadrícula de 6 tarjetas de ventajas.
+8. **"Why Teams Move Toward Automation"**: beneficios + lista de perfiles de usuario.
+9. **"Get Started NOW"**: tres tarjetas de producto.
+10. **"Engineering Insights"**: carrusel de blog.
+11. **Pie de página**.
 
-Al construir páginas, sigue este orden y esta estructura de secciones.
+Cada sección (salvo el hero) tiene la clase `.reveal` y aparece al hacer scroll:
 
-## Animación y movimiento
+```css
+.reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+.reveal.active { opacity: 1; transform: translateY(0); }
+```
 
-Este proyecto usa **movimiento expresivo**. Las animaciones son parte del lenguaje de diseño.
+## Modo oscuro
 
-### Animaciones CSS
+Se activa con un botón en la barra (ícono de luna/sol), que agrega `dark-mode` a `body` y guarda la preferencia en `localStorage` (`theme = 'dark'`). Cambios principales:
 
-- `progress-bar-stripes`
-- `spinner-border`
-- `spinner-grow`
-- `placeholder-glow`
-- `placeholder-wave`
-
-### Tokens de movimiento
-
-- **Escala de duración:** `0ms`, `100ms`, `150ms`, `200ms`, `250ms`, `300ms`, `350ms`, `400ms`, `500ms`, `600ms`, `800ms`, `1000ms`
-- **Funciones de easing:** `ease-in-out`, `linear`, `ease`, `ease-out`, `cubic-bezier(0.5,0,0,1)`, `cubic-bezier(0.175,0.885,0.32,1.275)`, `cubic-bezier(0.2,0.8,0.2,1)`, `cubic-bezier(0.4,0,0.2,1)`, `cubic-bezier(0.25,0.8,0.25,1)`, `cubic-bezier(0.8,0,0.2,1)`, `cubic-bezier(0.16,1,0.3,1)`
-- **Propiedades animadas:** `border-color`, `box-shadow`
-
-### Pautas de movimiento
-
-- **Duración:** usa valores de la escala de duración anterior. Cortos (0ms) para microinteracciones, largos (1000ms) para transiciones de página
-- **Easing:** usa `ease-in-out` como curva de easing predeterminada
-- **Dirección:** los elementos entran desde abajo/derecha y salen hacia arriba/izquierda
-- **Movimiento reducido:** respeta siempre `prefers-reduced-motion` — desactiva las animaciones cuando esté activado
-
-## Profundidad y elevación
-
-### Tokens de sombra
-
-- Sutil: `0 0 0 1px #fff,0 0 0 .25rem rgba(13,110,253,.25)`
-- Sutil: `inset 0 0 0 1px rgba(59,130,246,0.2)`
-- Sutil: `inset 0 0 0 1px rgba(96,165,250,0.25)`
-- Sutil: `0 0 0 2px #ffffff`
-- Sutil: `0 0 0 2px #0f172a`
-- Elevada (tarjetas, botones): `0 0 0 .25rem rgba(13,110,253,.25)`
-
-### Escala de z-index
-
-`0, 1, 2, 3, 4, 5, 10, 100, 1020, 1030, 1040, 1055, 9999`
-
-Usa exactamente estos valores — nunca inventes valores de z-index.
+- Fondo `#0f172a`, títulos `#f8fafc`, párrafos `#cbd5e1`, texto atenuado `#94a3b8`.
+- Azul de texto destacado `#60a5fa` en lugar de `#0d6efd`.
+- Vidrio `rgba(30, 41, 59, 0.6)` con borde `rgba(255, 255, 255, 0.1)`.
+- Tarjetas de producto `rgba(30, 41, 59, 0.9)`; pie de página `#020617`.
 
 ## Antipatrones (nunca hacer)
 
-- **Sin filas cebra** — las tablas y listas usan bordes para separar
-- **Sin colores inventados** — cada valor hex debe salir de la paleta anterior
-- **Sin espaciado arbitrario** — cada dimensión es múltiplo de 5px
-- **Sin fuentes adicionales** — solo se permiten Plus Jakarta Sans, Inter y Courier New
-- **Sin border-radius arbitrario** — usa la escala: .25rem, .25em, .375rem, 1rem, 2em, 3px, 4px, 6px, 8px, 10px
-- **Sin opacidad para estados deshabilitados** — usa colores atenuados en su lugar
+- **Página entera oscura en modo claro**: solo el hero es oscuro.
+- **Esquinas rectas o pequeñas** en tarjetas y botones.
+- **Sombras negras fuertes** en modo claro.
+- **Plus Jakarta Sans en texto normal**: solo va en titulares grandes y el logotipo.
+- **Componentes sin versión oscura**: todo componente nuevo necesita su regla `body.dark-mode`.
+- **Animaciones bruscas**: las entradas son suaves (0.6–0.8s) y los desplazamientos al pasar el cursor, pequeños (2–10px).
 
 ## Flujo de trabajo
 
-1. **Lee** `DESIGN.md` antes de escribir cualquier código de interfaz
-2. **Elige los colores** de la sección Sistema de color — nunca inventes nuevos
-3. **Define la tipografía** — solo Plus Jakarta Sans, Inter y Courier New, usando la escala tipográfica
-4. **Construye el layout** sobre la cuadrícula de 5px — revisa cada margin, padding y gap
-5. **Ajusta los componentes** a los patrones anteriores antes de crear nuevos
-6. **Aplica la elevación** — usa los tokens de sombra
-7. **Valida** — cada valor debe remitir a un token de diseño. Sin números mágicos.
+1. **Lee** `DESIGN.md` para los valores (colores, tipografía, sombras).
+2. **Parte de un patrón** de esta guía antes de crear un componente nuevo.
+3. **Usa las variables CSS** (`--accent-color`, `--glass-bg`, etc.) en lugar de escribir colores fijos.
+4. **Define el modo oscuro** de cada componente.
+5. **Revisa en móvil** (≤ 768px): titular a 40px, secciones a 60px, menú colapsado.
 
 ## Especificación de marca
 
-- **Favicon:** `/favicon.ico`
 - **URL del sitio:** `https://nsvsoft.net/`
-- **Color de marca:** `#3b82f6`
-- **Tipografía de marca:** Plus Jakarta Sans
+- **Color de marca:** `#3b82f6` (degradado a `#2563eb`)
+- **Tipografía de marca:** Plus Jakarta Sans 800 (logotipo y titulares); Inter para el resto
+- **Logotipo:** gota de agua/llama con "NSV" + "NSVSOFT"; versión clara sobre el hero y versión azul con la barra en blanco
 
 ## Referencia rápida
 
 ```
-Fondo:          #000000
-Superficie:     #0f172a
-Texto:          #ffffff / #94a3b8
-Acento:         #3b82f6
-Borde:          #212529
-Fuente:         Plus Jakarta Sans
-Espaciado:      5px grid
-Radio:          12px
-Componentes:    9 detectados
+Fondo:          #f8fafc (hero #020617; oscuro #0f172a)
+Vidrio:         rgba(255,255,255,0.75) + blur(16px)
+Texto:          #334155 / #64748b
+Acento:         #3b82f6 → #2563eb
+Fuente:         Inter (titular: Plus Jakarta Sans 800)
+Secciones:      100px (60px en móvil)
+Radio:          24px tarjetas · 50px botones
+Contenedor:     1320px
 ```
-
