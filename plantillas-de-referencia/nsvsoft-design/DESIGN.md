@@ -1,6 +1,5 @@
 # nsvsoft DESIGN.md
 
-> Auto-generated design system — reverse-engineered via static analysis by skillui.
 > Frameworks: None detected
 > Colors: 20 · Fonts: 3 · Components: 9
 > Icon library: not detected · State: not detected
