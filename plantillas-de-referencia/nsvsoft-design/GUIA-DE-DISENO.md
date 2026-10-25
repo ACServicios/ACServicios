@@ -1,50 +1,50 @@
-# nsvsoft Design System
+# Guía de diseño de nsvsoft
 
-You are building UI for **nsvsoft**. Dark-themed, cool palette, sans-serif typography (Plus Jakarta Sans), standard density on a 5px grid, expressive motion.
+Esta guía describe la interfaz de **nsvsoft**. Tema oscuro, paleta fría, tipografía sans-serif (Plus Jakarta Sans), densidad estándar sobre una cuadrícula de 5px y movimiento expresivo.
 
-## Design Philosophy
+## Filosofía de diseño
 
-- **Layered depth** — use shadow tokens to create a sense of physical layering. Each elevation level has a specific shadow.
-- **Gradient accents** — gradients are used thoughtfully for emphasis, not decoration.
-- **Type pairing** — Plus Jakarta Sans for body/UI text, Inter for headings/display. Never introduce a third typeface.
-- **standard density** — 5px base grid. Every dimension is a multiple of 5.
-- **cool palette** — the color temperature runs cool, matching the sans-serif typography.
-- **Restrained accent** — `#3b82f6` is the only pop of color. Used exclusively for CTAs, links, focus rings, and active states.
-- **Expressive motion** — animations are an integral part of the experience. Use spring physics and layout animations.
+- **Profundidad en capas** — usa los tokens de sombra para crear una sensación de superposición física. Cada nivel de elevación tiene una sombra específica.
+- **Acentos con degradado** — los degradados se usan con criterio para dar énfasis, no como decoración.
+- **Combinación tipográfica** — Plus Jakarta Sans para el texto de cuerpo/interfaz, Inter para encabezados/display. Nunca introduzcas una tercera tipografía.
+- **Densidad estándar** — cuadrícula base de 5px. Cada dimensión es múltiplo de 5.
+- **Paleta fría** — la temperatura de color es fría, en sintonía con la tipografía sans-serif.
+- **Acento contenido** — `#3b82f6` es el único toque de color. Se usa exclusivamente para CTAs, enlaces, anillos de foco y estados activos.
+- **Movimiento expresivo** — las animaciones son parte integral de la experiencia. Usa física de resortes (spring) y animaciones de layout.
 
-## Color System
+## Sistema de color
 
-### Core Palette
+### Paleta principal
 
-| Role | Token | Hex | Use |
+| Rol | Token | Hex | Uso |
 |------|-------|-----|-----|
-| Background | `--background` | `#000000` | Page/app background |
-| Surface | `--surface` | `#0f172a` | Cards, panels, modals |
-| Text Primary | `--text-primary` | `#ffffff` | Headings, body text |
-| Text Muted | `--text-muted` | `#94a3b8` | Captions, placeholders |
-| Accent | `--accent` | `#3b82f6` | CTAs, links, focus rings |
-| Border | `--border` | `#212529` | Dividers, card borders |
+| Fondo | `--background` | `#000000` | Fondo de la página/aplicación |
+| Superficie | `--surface` | `#0f172a` | Tarjetas, paneles, modales |
+| Texto principal | `--text-primary` | `#ffffff` | Encabezados, texto de cuerpo |
+| Texto atenuado | `--text-muted` | `#94a3b8` | Leyendas, placeholders |
+| Acento | `--accent` | `#3b82f6` | CTAs, enlaces, anillos de foco |
+| Borde | `--border` | `#212529` | Divisores, bordes de tarjetas |
 
-### Status Colors
+### Colores de estado
 
-| Status | Hex | Use |
+| Estado | Hex | Uso |
 |--------|-----|-----|
-| Success | `#198754` | Confirmations, positive trends |
-| Warning | `#f59e0b` | Caution states, pending items |
-| Danger | `#dc3545` | Errors, destructive actions |
+| Éxito | `#198754` | Confirmaciones, tendencias positivas |
+| Advertencia | `#f59e0b` | Estados de precaución, elementos pendientes |
+| Peligro | `#dc3545` | Errores, acciones destructivas |
 
-### Extended Palette
+### Paleta extendida
 
 - **theme-color:** `#2563eb`
 - **bs-primary:** `#0d6efd`
-- **primary-dark:** `#020617` — Deep background layer or shadow color
-- **bs-secondary:** `#6c757d` — Secondary text, placeholder text
+- **primary-dark:** `#020617` — Capa de fondo profunda o color de sombra
+- **bs-secondary:** `#6c757d` — Texto secundario, texto de placeholder
 - **text-main:** `#334155`
 - **bs-primary-text-emphasis:** `#6ea8fe`
 - **primary-light:** `#1e293b`
 - `#10b981`
 
-### CSS Variable Tokens
+### Tokens de variables CSS
 
 ```css
 --bs-primary: #0d6efd;
@@ -69,15 +69,15 @@ You are building UI for **nsvsoft**. Dark-themed, cool palette, sans-serif typog
 --bs-secondary-bg-rgb: 233,236,239;
 ```
 
-## Typography
+## Tipografía
 
-### Font Stack
+### Pila de fuentes
 
-- **Plus Jakarta Sans** — Heading 1, Heading 2, Heading 3
-- **Inter** — Body, Caption
-- **Courier New** — Code
+- **Plus Jakarta Sans** — Encabezado 1, Encabezado 2, Encabezado 3
+- **Inter** — Cuerpo, Leyenda
+- **Courier New** — Código
 
-### Font Sources
+### Origen de las fuentes
 
 ```css
 @font-face {
@@ -102,56 +102,56 @@ You are building UI for **nsvsoft**. Dark-themed, cool palette, sans-serif typog
 }
 ```
 
-### Type Scale
+### Escala tipográfica
 
-| Role | Family | Size | Weight |
+| Rol | Familia | Tamaño | Peso |
 |------|--------|------|--------|
-| Heading 1 | Plus Jakarta Sans | 5rem | 700 |
-| Heading 2 | Plus Jakarta Sans | 4.5rem | 700 |
-| Heading 3 | Plus Jakarta Sans | 4rem | 700 |
-| Body | Inter | 0.75rem | 400 |
-| Caption | Inter | 1rem | 400 |
-| Code | Courier New | 14px | 400 |
+| Encabezado 1 | Plus Jakarta Sans | 5rem | 700 |
+| Encabezado 2 | Plus Jakarta Sans | 4.5rem | 700 |
+| Encabezado 3 | Plus Jakarta Sans | 4rem | 700 |
+| Cuerpo | Inter | 0.75rem | 400 |
+| Leyenda | Inter | 1rem | 400 |
+| Código | Courier New | 14px | 400 |
 
-### Typography Rules
+### Reglas tipográficas
 
-- Body/UI: **Plus Jakarta Sans**, Headings: **Inter** — these are the only display fonts
-- Max 3-4 font sizes per screen
-- Headings: weight 600-700, body: weight 400
-- Use color and opacity for text hierarchy, not additional font sizes
-- Line height: 1.5 for body, 1.2 for headings
+- Cuerpo/interfaz: **Plus Jakarta Sans**, encabezados: **Inter** — son las únicas fuentes de display
+- Máximo 3-4 tamaños de fuente por pantalla
+- Encabezados: peso 600-700, cuerpo: peso 400
+- Usa el color y la opacidad para la jerarquía del texto, no tamaños de fuente adicionales
+- Interlineado: 1.5 para el cuerpo, 1.2 para los encabezados
 
-## Spacing & Layout
+## Espaciado y layout
 
-### Base Grid: 5px
+### Cuadrícula base: 5px
 
-Every dimension (margin, padding, gap, width, height) must be a multiple of **5px**.
+Cada dimensión (margin, padding, gap, ancho, alto) debe ser múltiplo de **5px**.
 
-### Spacing Scale
+### Escala de espaciado
 
 `5, 10, 15, 20, 25, 30, 35, 40, 50, 55, 60, 80` px
 
-### Spacing as Meaning
+### El espaciado como significado
 
-| Spacing | Use |
+| Espaciado | Uso |
 |---------|-----|
-| 2.5-5px | Tight: related items within a group |
-| 10px | Medium: between groups |
-| 15-20px | Wide: between sections |
-| 30px+ | Vast: major section breaks |
+| 2.5-5px | Ajustado: elementos relacionados dentro de un grupo |
+| 10px | Medio: entre grupos |
+| 15-20px | Amplio: entre secciones |
+| 30px+ | Muy amplio: cortes entre secciones principales |
 
-### Border Radius
+### Radio de borde
 
-Scale: `.25rem, .25em, .375rem, 1rem, 2em, inherit, 3px, 4px, 6px, 8px, 10px, 12px, 14px, 15px, 16px, 18px, 20px, 24px, 28px, 30px, 40px, 50px`
-Default: `12px`
+Escala: `.25rem, .25em, .375rem, 1rem, 2em, inherit, 3px, 4px, 6px, 8px, 10px, 12px, 14px, 15px, 16px, 18px, 20px, 24px, 28px, 30px, 40px, 50px`
+Predeterminado: `12px`
 
-### Container
+### Contenedor
 
-Max-width: `991px`, centered with auto margins.
+Ancho máximo: `991px`, centrado con márgenes automáticos.
 
 ### Breakpoints
 
-| Name | Value |
+| Nombre | Valor |
 |------|-------|
 | sm | 575.98px |
 | sm | 576px |
@@ -166,11 +166,11 @@ Max-width: `991px`, centered with auto margins.
 | 2xl | 1399.98px |
 | 2xl | 1400px |
 
-Mobile-first: design for small screens, layer on responsive overrides.
+Mobile-first: diseña para pantallas pequeñas y agrega encima los ajustes responsivos.
 
-## Component Patterns
+## Patrones de componentes
 
-### Card
+### Tarjeta
 
 ```css
 .card {
@@ -189,7 +189,7 @@ Mobile-first: design for small screens, layer on responsive overrides.
 </div>
 ```
 
-### Button
+### Botón
 
 ```css
 /* Primary */
@@ -218,7 +218,7 @@ Mobile-first: design for small screens, layer on responsive overrides.
 <button class="btn-ghost">Learn More</button>
 ```
 
-### Input
+### Campo de entrada
 
 ```css
 .input {
@@ -236,7 +236,7 @@ Mobile-first: design for small screens, layer on responsive overrides.
 <input class="input" type="text" placeholder="Search..." />
 ```
 
-### Badge / Chip
+### Insignia / Chip
 
 ```css
 .badge {
@@ -256,7 +256,7 @@ Mobile-first: design for small screens, layer on responsive overrides.
 <span class="badge">Beta</span>
 ```
 
-### Modal / Dialog
+### Modal / Diálogo
 
 ```css
 .modal-backdrop { background: rgba(0, 0, 0, 0.6); }
@@ -282,7 +282,7 @@ Mobile-first: design for small screens, layer on responsive overrides.
 </div>
 ```
 
-### Table
+### Tabla
 
 ```css
 .table { width: 100%; border-collapse: collapse; }
@@ -312,7 +312,7 @@ Mobile-first: design for small screens, layer on responsive overrides.
 </table>
 ```
 
-### Navigation
+### Navegación
 
 ```css
 .nav {
@@ -341,42 +341,42 @@ Mobile-first: design for small screens, layer on responsive overrides.
 </nav>
 ```
 
-### Extracted Components
+### Componentes extraídos
 
-These components were found in the codebase:
+Estos componentes se encontraron en el código fuente:
 
-**Button** (`html`)
-- Variants: `sm`, `link`, `primary-glow`, `lg`, `outline-light`
+**Botón** (`html`)
+- Variantes: `sm`, `link`, `primary-glow`, `lg`, `outline-light`
 
-**Input** (`html`)
+**Campo de entrada** (`html`)
 
-**Card** (`html`)
-- Variants: `home`, `detail`, `glass`, `1`, `2`
+**Tarjeta** (`html`)
+- Variantes: `home`, `detail`, `glass`, `1`, `2`
 
-**Navigation** (`html`)
+**Navegación** (`html`)
 
-**Badge** (`html`)
+**Insignia** (`html`)
 
 **Modal** (`html`)
 
-## Page Structure
+## Estructura de página
 
-The following page sections were detected:
+Se detectaron las siguientes secciones de página:
 
-- **Navigation** — Top navigation bar (9 items)
-- **Hero** — Hero/banner section with headline and CTAs
-- **Features** — Feature/benefit cards grid (23 items)
-- **Footer** — Page footer with links and info (17 items)
-- **Faq** — FAQ/accordion section
-- **Cta** — Call-to-action section
+- **Navegación** — Barra de navegación superior (9 elementos)
+- **Hero** — Sección hero/banner con titular y CTAs
+- **Características** — Cuadrícula de tarjetas de características/beneficios (23 elementos)
+- **Pie de página** — Pie de página con enlaces e información (17 elementos)
+- **Preguntas frecuentes** — Sección de FAQ/acordeón
+- **CTA** — Sección de llamado a la acción
 
-When building pages, follow this section order and structure.
+Al construir páginas, sigue este orden y esta estructura de secciones.
 
-## Animation & Motion
+## Animación y movimiento
 
-This project uses **expressive motion**. Animations are part of the design language.
+Este proyecto usa **movimiento expresivo**. Las animaciones son parte del lenguaje de diseño.
 
-### CSS Animations
+### Animaciones CSS
 
 - `progress-bar-stripes`
 - `spinner-border`
@@ -384,73 +384,73 @@ This project uses **expressive motion**. Animations are part of the design langu
 - `placeholder-glow`
 - `placeholder-wave`
 
-### Motion Tokens
+### Tokens de movimiento
 
-- **Duration scale:** `0ms`, `100ms`, `150ms`, `200ms`, `250ms`, `300ms`, `350ms`, `400ms`, `500ms`, `600ms`, `800ms`, `1000ms`
-- **Easing functions:** `ease-in-out`, `linear`, `ease`, `ease-out`, `cubic-bezier(0.5,0,0,1)`, `cubic-bezier(0.175,0.885,0.32,1.275)`, `cubic-bezier(0.2,0.8,0.2,1)`, `cubic-bezier(0.4,0,0.2,1)`, `cubic-bezier(0.25,0.8,0.25,1)`, `cubic-bezier(0.8,0,0.2,1)`, `cubic-bezier(0.16,1,0.3,1)`
-- **Animated properties:** `border-color`, `box-shadow`
+- **Escala de duración:** `0ms`, `100ms`, `150ms`, `200ms`, `250ms`, `300ms`, `350ms`, `400ms`, `500ms`, `600ms`, `800ms`, `1000ms`
+- **Funciones de easing:** `ease-in-out`, `linear`, `ease`, `ease-out`, `cubic-bezier(0.5,0,0,1)`, `cubic-bezier(0.175,0.885,0.32,1.275)`, `cubic-bezier(0.2,0.8,0.2,1)`, `cubic-bezier(0.4,0,0.2,1)`, `cubic-bezier(0.25,0.8,0.25,1)`, `cubic-bezier(0.8,0,0.2,1)`, `cubic-bezier(0.16,1,0.3,1)`
+- **Propiedades animadas:** `border-color`, `box-shadow`
 
-### Motion Guidelines
+### Pautas de movimiento
 
-- **Duration:** Use values from the duration scale above. Short (0ms) for micro-interactions, long (1000ms) for page transitions
-- **Easing:** Use `ease-in-out` as the default easing curve
-- **Direction:** Elements enter from bottom/right, exit to top/left
-- **Reduced motion:** Always respect `prefers-reduced-motion` — disable animations when set
+- **Duración:** usa valores de la escala de duración anterior. Cortos (0ms) para microinteracciones, largos (1000ms) para transiciones de página
+- **Easing:** usa `ease-in-out` como curva de easing predeterminada
+- **Dirección:** los elementos entran desde abajo/derecha y salen hacia arriba/izquierda
+- **Movimiento reducido:** respeta siempre `prefers-reduced-motion` — desactiva las animaciones cuando esté activado
 
-## Depth & Elevation
+## Profundidad y elevación
 
-### Shadow Tokens
+### Tokens de sombra
 
-- Subtle: `0 0 0 1px #fff,0 0 0 .25rem rgba(13,110,253,.25)`
-- Subtle: `inset 0 0 0 1px rgba(59,130,246,0.2)`
-- Subtle: `inset 0 0 0 1px rgba(96,165,250,0.25)`
-- Subtle: `0 0 0 2px #ffffff`
-- Subtle: `0 0 0 2px #0f172a`
-- Raised (cards, buttons): `0 0 0 .25rem rgba(13,110,253,.25)`
+- Sutil: `0 0 0 1px #fff,0 0 0 .25rem rgba(13,110,253,.25)`
+- Sutil: `inset 0 0 0 1px rgba(59,130,246,0.2)`
+- Sutil: `inset 0 0 0 1px rgba(96,165,250,0.25)`
+- Sutil: `0 0 0 2px #ffffff`
+- Sutil: `0 0 0 2px #0f172a`
+- Elevada (tarjetas, botones): `0 0 0 .25rem rgba(13,110,253,.25)`
 
-### Z-Index Scale
+### Escala de z-index
 
 `0, 1, 2, 3, 4, 5, 10, 100, 1020, 1030, 1040, 1055, 9999`
 
-Use these exact values — never invent z-index values.
+Usa exactamente estos valores — nunca inventes valores de z-index.
 
-## Anti-Patterns (Never Do)
+## Antipatrones (nunca hacer)
 
-- **No zebra striping** — tables and lists use borders for separation
-- **No invented colors** — every hex value must come from the palette above
-- **No arbitrary spacing** — every dimension is a multiple of 5px
-- **No extra fonts** — only Plus Jakarta Sans and Inter and Courier New are allowed
-- **No arbitrary border-radius** — use the scale: .25rem, .25em, .375rem, 1rem, 2em, 3px, 4px, 6px, 8px, 10px
-- **No opacity for disabled states** — use muted colors instead
+- **Sin filas cebra** — las tablas y listas usan bordes para separar
+- **Sin colores inventados** — cada valor hex debe salir de la paleta anterior
+- **Sin espaciado arbitrario** — cada dimensión es múltiplo de 5px
+- **Sin fuentes adicionales** — solo se permiten Plus Jakarta Sans, Inter y Courier New
+- **Sin border-radius arbitrario** — usa la escala: .25rem, .25em, .375rem, 1rem, 2em, 3px, 4px, 6px, 8px, 10px
+- **Sin opacidad para estados deshabilitados** — usa colores atenuados en su lugar
 
-## Workflow
+## Flujo de trabajo
 
-1. **Read** `DESIGN.md` before writing any UI code
-2. **Pick colors** from the Color System section — never invent new ones
-3. **Set typography** — Plus Jakarta Sans, Inter, Courier New only, using the type scale
-4. **Build layout** on the 5px grid — check every margin, padding, gap
-5. **Match components** to patterns above before creating new ones
-6. **Apply elevation** — use shadow tokens
-7. **Validate** — every value traces back to a design token. No magic numbers.
+1. **Lee** `DESIGN.md` antes de escribir cualquier código de interfaz
+2. **Elige los colores** de la sección Sistema de color — nunca inventes nuevos
+3. **Define la tipografía** — solo Plus Jakarta Sans, Inter y Courier New, usando la escala tipográfica
+4. **Construye el layout** sobre la cuadrícula de 5px — revisa cada margin, padding y gap
+5. **Ajusta los componentes** a los patrones anteriores antes de crear nuevos
+6. **Aplica la elevación** — usa los tokens de sombra
+7. **Valida** — cada valor debe remitir a un token de diseño. Sin números mágicos.
 
-## Brand Spec
+## Especificación de marca
 
 - **Favicon:** `/favicon.ico`
-- **Site URL:** `https://nsvsoft.net/`
-- **Brand color:** `#3b82f6`
-- **Brand typeface:** Plus Jakarta Sans
+- **URL del sitio:** `https://nsvsoft.net/`
+- **Color de marca:** `#3b82f6`
+- **Tipografía de marca:** Plus Jakarta Sans
 
-## Quick Reference
+## Referencia rápida
 
 ```
-Background:     #000000
-Surface:        #0f172a
-Text:           #ffffff / #94a3b8
-Accent:         #3b82f6
-Border:         #212529
-Font:           Plus Jakarta Sans
-Spacing:        5px grid
-Radius:         12px
-Components:     9 detected
+Fondo:          #000000
+Superficie:     #0f172a
+Texto:          #ffffff / #94a3b8
+Acento:         #3b82f6
+Borde:          #212529
+Fuente:         Plus Jakarta Sans
+Espaciado:      5px grid
+Radio:          12px
+Componentes:    9 detectados
 ```
 
